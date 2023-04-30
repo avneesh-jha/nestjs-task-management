@@ -5,7 +5,7 @@ export interface Task {
   status: statusType;
 }
 
-enum statusType {
+export enum statusType {
   OPEN = 'open',
   IN_PROGRESS = 'in_progress',
   DONE = 'done',
