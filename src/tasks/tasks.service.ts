@@ -3,6 +3,7 @@ import { Task, statusType } from './task.model';
 import { v4 as UniqueId } from 'uuid';
 import { CreateTaskDTO } from './dto/create-task.dto';
 import { UpdateTaskDTO } from './dto/update-task.dto';
+import { GetTasKFilterDTO } from './dto/task-filter.dto';
 
 @Injectable()
 export class TasksService {
@@ -12,6 +13,36 @@ export class TasksService {
   }
   getTaskById(id: string): Task {
     return this.tasks.find((task) => task.id === id);
+  }
+
+  getTasksByFilter(getTaskFilterDTO: GetTasKFilterDTO): Task[] {
+    const { status, search } = getTaskFilterDTO;
+    let statusa = statusType.DONE;
+    console.log(status, search);
+
+    let tasks = this.getAllTasks();
+    if (status === statusType.DONE || status === statusType.OPEN) {
+      switch (status) {
+        case 'done':
+          statusa = statusType.DONE;
+          break;
+        case 'open':
+          statusa = statusType.OPEN;
+          break;
+      }
+      tasks = tasks.filter((task) => task.status === statusa);
+      return tasks;
+    }
+    if (search) {
+      tasks = tasks.filter((task) => {
+        if (task.title.includes(search) || task.description.includes(search)) {
+          return true;
+        }
+
+        return false;
+      });
+    }
+    return tasks;
   }
 
   createTask(createTaskDTO: CreateTaskDTO) {
@@ -38,7 +69,7 @@ export class TasksService {
           case 'done':
             task.status = statusType.DONE;
             return task;
-          case 'in_progress':
+          case 'progress':
             task.status = statusType.IN_PROGRESS;
             return task;
           case 'open':
