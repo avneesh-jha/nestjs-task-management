@@ -70,7 +70,7 @@ export class TasksService {
           case 'done':
             task.status = statusType.DONE;
             return task;
-          case 'progress':
+          case 'in_progress':
             task.status = statusType.IN_PROGRESS;
             return task;
           case 'open':
