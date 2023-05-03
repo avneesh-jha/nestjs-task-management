@@ -7,12 +7,14 @@ import {
   Delete,
   Patch,
   Query,
+  NotFoundException,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { Task } from './task.model';
 import { CreateTaskDTO } from './dto/create-task.dto';
 import { UpdateTaskDTO } from './dto/update-task.dto';
 import { GetTasKFilterDTO } from './dto/task-filter.dto';
+import { NotFoundError } from 'rxjs';
 
 @Controller('tasks')
 export class TasksController {
@@ -28,7 +30,11 @@ export class TasksController {
 
   @Get('view/:id')
   getTaskById(@Param('id') id: string): Task {
-    return this.taskService.getTaskById(id);
+    const task = this.taskService.getTaskById(id);
+    if (!task) {
+      throw new NotFoundException(`Not found the post with ${id}`);
+    }
+    return task;
   }
 
   @Post('new')
