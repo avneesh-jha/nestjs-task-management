@@ -14,7 +14,6 @@ import { Task } from './task.model';
 import { CreateTaskDTO } from './dto/create-task.dto';
 import { UpdateTaskDTO } from './dto/update-task.dto';
 import { GetTasKFilterDTO } from './dto/task-filter.dto';
-import { NotFoundError } from 'rxjs';
 
 @Controller('tasks')
 export class TasksController {
