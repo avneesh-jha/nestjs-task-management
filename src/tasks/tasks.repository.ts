@@ -37,8 +37,11 @@ export class TasksRepository extends Repository<Task> {
     const { id, status, title } = updateTaskDTO;
     const task = await this.getTaskById(id);
     task.status = status;
-    task.title = title;
+    if (title) {
+      task.title = title;
+    }
     await this.save(task);
+
     return task;
   }
 

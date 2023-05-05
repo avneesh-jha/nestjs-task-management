@@ -14,7 +14,7 @@ export class TasksService {
   ) {}
 
   getTaskById(id: string): Promise<Task> {
-    return this.getTaskById(id);
+    return this.tasksRepository.getTaskById(id);
   }
 
   createNewTask(createTaskDTO: CreateTaskDTO): Promise<Task> {
