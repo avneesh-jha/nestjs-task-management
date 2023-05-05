@@ -1,9 +1,14 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { TasksService } from './tasks.service';
+import { Task } from './task.entity';
 
 @Controller('tasks')
 export class TasksController {
   constructor(private taskService: TasksService) {}
+  @Get('/:id')
+  getTaskById(@Param('id') id: string): Promise<Task> {
+    return this.taskService.getTaskById(id);
+  }
   // @Get('view')
   // getTasks(@Query() getTaskFilterDTO: GetTasKFilterDTO): Task[] {
   //   if (Object.keys(getTaskFilterDTO).length) {
