@@ -26,12 +26,12 @@ export class TasksService {
     return this.tasksRepository.createTask(createTaskDTO);
   }
 
-  async deleteTaskById(id: string): Promise<string> {
-    await this.getTaskById(id);
-    if (await this.tasksRepository.delete(id)) {
-      return 'deleted';
+  async deleteTaskById(id: string): Promise<void> {
+    const result = await this.tasksRepository.delete(id);
+    if (result.affected == 0) {
+      throw new NotFoundException(`not found any task with the given id ${id}`);
     }
-    return 'it did not exist';
+    return;
   }
   // getAllTasks(): Task[] {
   //   return this.tasks;

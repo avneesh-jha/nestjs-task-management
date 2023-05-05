@@ -29,7 +29,7 @@ export class TasksController {
   // //   return this.taskService.createTasks(title, description);
   // // }
   @Delete('delete/:id')
-  deleteById(@Param('id') id: string): Promise<string> {
+  deleteById(@Param('id') id: string): Promise<void> {
     return this.taskService.deleteTaskById(id);
   }
   // @Patch('/update/:id')
