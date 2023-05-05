@@ -31,7 +31,6 @@ export class TasksService {
     if (result.affected == 0) {
       throw new NotFoundException(`not found any task with the given id ${id}`);
     }
-    return;
   }
   // getAllTasks(): Task[] {
   //   return this.tasks;
