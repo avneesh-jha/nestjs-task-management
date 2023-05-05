@@ -3,7 +3,7 @@ import { TasksRepository } from './tasks.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from './task.entity';
 import { CreateTaskDTO } from './dto/create-task.dto';
-import { statusType } from './task.model';
+import { UpdateTaskDTO } from './dto/update-task.dto';
 
 @Injectable()
 export class TasksService {
@@ -12,14 +12,8 @@ export class TasksService {
     private tasksRepository: TasksRepository,
   ) {}
 
-  async getTaskById(id: string): Promise<Task> {
-    const found = await this.tasksRepository.findOne(id);
-
-    if (!found) {
-      throw new NotFoundException(`Task with ID "${id}" not found`);
-    }
-
-    return found;
+  getTaskById(id: string): Promise<Task> {
+    return this.getTaskById(id);
   }
 
   createNewTask(createTaskDTO: CreateTaskDTO): Promise<Task> {
@@ -62,40 +56,7 @@ export class TasksService {
   //   }
   //   return tasks;
   // }
-  // deleteTaskById(id: string): string {
-  //   const found = this.getTaskById(id);
-  //   this.tasks = this.tasks.filter((task) => task.id !== found.id);
-  //   return found ? 'deleted' : 'not found';
-  // }
-  // updateTaskById(id: string, updateTaskDTO: UpdateTaskDTO): Task {
-  //   const { status } = updateTaskDTO;
-  //   return this.tasks.find((task) => {
-  //     if (task.id === id) {
-  //       switch (status) {
-  //         case 'done':
-  //           task.status = statusType.DONE;
-  //           return task;
-  //         case 'in_progress':
-  //           task.status = statusType.IN_PROGRESS;
-  //           return task;
-  //         case 'open':
-  //           task.status = statusType.OPEN;
-  //           return task;
-  //         default:
-  //           return task;
-  //       }
-  //     }
-  //   });
-  // }
-  // createTasks(title: string, description: string) {
-  //   // const { title, description } = createTaskDTO;
-  //   const task: Task = {
-  //     id: UniqueId(),
-  //     title: title,
-  //     description: description,
-  //     status: statusType.OPEN,
-  //   };
-  //   this.tasks.push(task);
-  //   return task;
-  // }
+  updateTaskById(updateTaskDTO: UpdateTaskDTO): Promise<Task> {
+    return this.tasksRepository.updateTaskById(updateTaskDTO);
+  }
 }
