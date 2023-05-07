@@ -1,6 +1,8 @@
-import { EntityRepository, Not, Repository } from 'typeorm';
+import { EntityRepository, Repository } from 'typeorm';
 import { AuthCredsDto } from './dto/auth-creds.dto';
 import { User } from './user.entitiy';
+import * as bcrypt from 'bcrypt';
+
 import {
   ConflictException,
   InternalServerErrorException,
@@ -10,7 +12,11 @@ import {
 export class UserRepository extends Repository<User> {
   async createUser(authCredsDto: AuthCredsDto): Promise<void> {
     const { username, password } = authCredsDto;
-    const user = this.create({ username, password });
+
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(password, salt);
+    console.log('hashedPassword', hashedPassword);
+    const user = this.create({ username, password: hashedPassword });
     try {
       await this.save(user);
     } catch (e) {
