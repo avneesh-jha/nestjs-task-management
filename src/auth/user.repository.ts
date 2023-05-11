@@ -6,10 +6,7 @@ import * as bcrypt from 'bcrypt';
 import {
   ConflictException,
   InternalServerErrorException,
-  UnauthorizedException,
 } from '@nestjs/common';
-import { JwtPayload } from './jwt-payload.interface';
-
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
   async createUser(authCredsDto: AuthCredsDto): Promise<void> {
