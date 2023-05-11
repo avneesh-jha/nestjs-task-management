@@ -6,7 +6,9 @@ import * as bcrypt from 'bcrypt';
 import {
   ConflictException,
   InternalServerErrorException,
+  UnauthorizedException,
 } from '@nestjs/common';
+import { JwtPayload } from './jwt-payload.interface';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
@@ -15,12 +17,10 @@ export class UserRepository extends Repository<User> {
 
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
-    console.log('hashedPassword', hashedPassword);
     const user = this.create({ username, password: hashedPassword });
     try {
       await this.save(user);
     } catch (e) {
-      console.log(e.code);
       if (e.code == 23505) {
         throw new ConflictException('User name is duplicate');
       } else {
@@ -28,4 +28,17 @@ export class UserRepository extends Repository<User> {
       }
     }
   }
+
+  // async signIn(authCredsDto: AuthCredsDto): Promise<string> {
+  //   const { username, password } = authCredsDto;
+
+  //   const user = await this.findOne({ username });
+
+  //   if (user && (await bcrypt.compare(password, user.password))) {
+  //     const payload: JwtPayload = { username };
+  //     const accessToken: string = await this.jwtService.sign(payload);
+  //     return 'success';
+  //   } else {
+  //     throw new UnauthorizedException(' Please check your creds');
+  //   }
 }
