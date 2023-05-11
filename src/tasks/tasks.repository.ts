@@ -20,15 +20,19 @@ export class TasksRepository extends Repository<Task> {
 
     return task;
   }
-  async getAllTasks(taskFilterDTO: GetTasKFilterDTO): Promise<Task[]> {
+  async getAllTasks(
+    taskFilterDTO: GetTasKFilterDTO,
+    user: User,
+  ): Promise<Task[]> {
     const { status, search } = taskFilterDTO;
     const query = this.createQueryBuilder('task');
+    query.where({ user });
     if (status) {
       query.andWhere('task.status=  :status', { status });
     }
     if (search) {
       query.andWhere(
-        'LOWER(task.title) LIKE LOWER(:search) or LOWER(task.description) LIKE LOWER(:search)',
+        '(LOWER(task.title) LIKE LOWER(:search) or LOWER(task.description) LIKE LOWER(:search))',
         { search: `%${search}%` },
       );
     }

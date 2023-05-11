@@ -28,8 +28,11 @@ export class TasksService {
       throw new NotFoundException(`not found any task with the given id ${id}`);
     }
   }
-  getAllTasks(taskFilterTaskDto: GetTasKFilterDTO): Promise<Task[]> {
-    return this.tasksRepository.getAllTasks(taskFilterTaskDto);
+  getAllTasks(
+    taskFilterTaskDto: GetTasKFilterDTO,
+    user: User,
+  ): Promise<Task[]> {
+    return this.tasksRepository.getAllTasks(taskFilterTaskDto, user);
   }
   // getTasksByFilter(getTaskFilterDTO: GetTasKFilterDTO): Task[] {
   //   const { status, search } = getTaskFilterDTO;
