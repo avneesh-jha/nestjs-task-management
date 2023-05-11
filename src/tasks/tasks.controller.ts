@@ -7,14 +7,17 @@ import {
   Delete,
   Patch,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { Task } from './task.entity';
 import { CreateTaskDTO } from './dto/create-task.dto';
 import { UpdateTaskDTO } from './dto/update-task.dto';
 import { GetTasKFilterDTO } from './dto/task-filter.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('tasks')
+@UseGuards(AuthGuard())
 export class TasksController {
   constructor(private taskService: TasksService) {}
   @Get()
