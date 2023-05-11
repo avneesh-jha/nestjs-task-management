@@ -39,9 +39,12 @@ export class TasksRepository extends Repository<Task> {
     const tasks = await query.getMany();
     return tasks;
   }
-  async updateTaskById(updateTaskDTO: UpdateTaskDTO): Promise<Task> {
+  async updateTaskById(
+    updateTaskDTO: UpdateTaskDTO,
+    user: User,
+  ): Promise<Task> {
     const { id, status, title } = updateTaskDTO;
-    const task = await this.getTaskById(id);
+    const task = await this.getTaskById(id, user);
     task.status = status;
     if (title) {
       task.title = title;
@@ -51,8 +54,8 @@ export class TasksRepository extends Repository<Task> {
     return task;
   }
 
-  async getTaskById(id: string): Promise<Task> {
-    const found = await this.findOne(id);
+  async getTaskById(id: string, user: User): Promise<Task> {
+    const found = await this.findOne({ where: { id, user } });
 
     if (!found) {
       throw new NotFoundException(`Task with ID "${id}" not found`);
