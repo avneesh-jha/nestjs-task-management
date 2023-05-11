@@ -23,8 +23,11 @@ import { GetUser } from 'src/auth/get-user.decorator';
 export class TasksController {
   constructor(private taskService: TasksService) {}
   @Get()
-  getTasks(@Query() taskFilterDTO: GetTasKFilterDTO): Promise<Task[]> {
-    return this.taskService.getAllTasks(taskFilterDTO);
+  getTasks(
+    @Query() taskFilterDTO: GetTasKFilterDTO,
+    @GetUser() user: User,
+  ): Promise<Task[]> {
+    return this.taskService.getAllTasks(taskFilterDTO, user);
   }
 
   @Get('/:id')
